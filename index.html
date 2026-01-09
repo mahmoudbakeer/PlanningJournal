@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahmoud Bakir | Study Planner Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #00b4db, #0083b0);
+            --secondary-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            --third-gradient: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            --dark-gradient: linear-gradient(135deg, #2c3e50, #4a6491);
+            --gold-gradient: linear-gradient(135deg, #f9d423 0%, #ff4e50 100%);
+            --accent-color: #2c3e50;
+            --card-bg: #ffffff;
+            --text-main: #34495e;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* Animated Header */
+        .header {
+            text-align: center;
+            padding: 35px;
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: 25px;
+            margin-bottom: 35px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            animation: headerGlow 6s infinite alternate;
+        }
+
+        @keyframes headerGlow {
+            0% { box-shadow: 0 15px 30px rgba(0, 132, 255, 0.3); }
+            100% { box-shadow: 0 15px 30px rgba(255, 94, 0, 0.3); }
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gold-gradient);
+            animation: rainbow 10s infinite linear;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 42px;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 20px;
+            margin-top: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .theme-selector {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid white;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-blue { background: linear-gradient(135deg, #00b4db, #0083b0); }
+        .theme-purple { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .theme-dark { background: linear-gradient(135deg, #2c3e50, #34495e); }
+        .theme-green { background: linear-gradient(135deg, #27ae60, #2ecc71); }
+
+        /* Stats Dashboard */
+        .stats-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            border-top: 5px solid;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .stat-card:nth-child(1) { border-color: #00b4db; }
+        .stat-card:nth-child(2) { border-color: #ff9a9e; }
+        .stat-card:nth-child(3) { border-color: #84fab0; }
+        .stat-card:nth-child(4) { border-color: #f9d423; }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        /* Grid Layout */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        /* Enhanced Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: none;
+            transform: translateY(0);
+            animation: cardFloat 6s infinite ease-in-out;
+            position: relative;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            padding: 20px 30px;
+            font-weight: bold;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+        }
+
+        .card:hover .card-header::after {
+            animation: shine 1.5s;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .weekend-header { background: var(--secondary-gradient); }
+        .weekday-header { background: var(--third-gradient); }
+
+        .time-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 16px;
+            backdrop-filter: blur(5px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        tr {
+            transition: all 0.3s;
+        }
+
+        tr:hover {
+            background-color: rgba(0, 180, 219, 0.05);
+            transform: translateX(5px);
+        }
+
+        td {
+            padding: 20px 30px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .time-col {
+            width: 25%;
+            font-weight: bold;
+            color: #2980b9;
+            font-size: 16px;
+            position: relative;
+        }
+
+        .time-col::before {
+            content: '🕐';
+            margin-left: 10px;
+        }
+
+        .activity-col {
+            width: 65%;
+            font-size: 17px;
+            position: relative;
+        }
+
+        .check-col {
+            width: 10%;
+            text-align: center;
+        }
+
+        /* Animated Checkbox */
+        .checkbox-container {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .checkbox-container input {
+            display: none;
+        }
+
+        .checkmark {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background-color: #eee;
+            border-radius: 50%;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: #2ecc71;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 10px;
+            top: 6px;
+            width: 8px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+            animation: checkPop 0.3s;
+        }
+
+        @keyframes checkPop {
+            0% { transform: scale(0) rotate(45deg); }
+            50% { transform: scale(1.2) rotate(45deg); }
+            100% { transform: scale(1) rotate(45deg); }
+        }
+
+        /* Special rows */
+        .special-row {
+            background-color: #fff9e6;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .special-row::before {
+            content: '⭐';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .shower { color: #3498db; }
+        .dinner { color: #e67e22; }
+        .english { border-right: 5px solid #9b59b6; padding-right: 25px; }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 12px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-gradient);
+            width: 0%;
+            transition: width 1s ease;
+            border-radius: 10px;
+        }
+
+        /* Footer Notes */
+        .footer-notes {
+            margin-top: 40px;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            border-right: 10px solid #f1c40f;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-notes::before {
+            content: '💡';
+            position: absolute;
+            font-size: 100px;
+            right: -30px;
+            bottom: -30px;
+            opacity: 0.1;
+            transform: rotate(20deg);
+        }
+
+        .footer-notes strong {
+            display: block;
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .footer-notes ul {
+            padding-right: 20px;
+        }
+
+        .footer-notes li {
+            margin-bottom: 10px;
+            font-size: 17px;
+            padding: 5px 0;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background: var(--primary-gradient);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 180, 219, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 180, 219, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-gradient);
+        }
+
+        .btn-dark {
+            background: var(--dark-gradient);
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 100;
+        }
+
+        .lang-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            color: white;
+            border: none;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .lang-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 32px;
+            }
+            
+            td {
+                padding: 15px 20px;
+            }
+            
+            .theme-selector {
+                position: relative;
+                top: 0;
+                left: 0;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .lang-toggle {
+                bottom: 20px;
+                left: 20px;
+            }
+            
+            .lang-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 16px;
+            }
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .main-container { width: 100%; }
+            .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+            .header { border-radius: 0; }
+            .controls, .lang-toggle, .theme-selector { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="header">
+        <div class="theme-selector">
+            <div class="theme-btn theme-blue" onclick="changeTheme('blue')"></div>
+            <div class="theme-btn theme-purple" onclick="changeTheme('purple')"></div>
+            <div class="theme-btn theme-dark" onclick="changeTheme('dark')"></div>
+            <div class="theme-btn theme-green" onclick="changeTheme('green')"></div>
+        </div>
+        <h1>Mahmoud Bakir 😊</h1>
+        <p id="subtitle">مخطط النجاح والإنجاز اليومي | Productivity Master</p>
+        <p id="date-display">اليوم: <span id="current-date"></span></p>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="resetDay()">
+            <i class="fas fa-redo"></i> إعادة تعيين اليوم
+        </button>
+        <button class="btn btn-secondary" onclick="printPlan()">
+            <i class="fas fa-print"></i> طباعة المخطط
+        </button>
+        <button class="btn btn-dark" onclick="toggleDarkMode()">
+            <i class="fas fa-moon"></i> الوضع الليلي
+        </button>
+        <button class="btn" onclick="addTask()">
+            <i class="fas fa-plus"></i> إضافة مهمة جديدة
+        </button>
+    </div>
+
+    <div class="stats-dashboard">
+        <div class="stat-card">
+            <div class="stat-value" id="completed-tasks">0</div>
+            <div class="stat-label">المهام المكتملة</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="productivity-score">0%</div>
+            <div class="stat-label">معدل الإنتاجية</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="study-time">0 س</div>
+            <div class="stat-label">وقت الدراسة اليوم</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="streak-days">0</div>
+            <div class="stat-label">أيام متتالية</div>
+        </div>
+    </div>
+
+    <div class="grid-layout">
+        
+        <div class="card">
+            <div class="card-header weekend-header">
+                <span>🟢 جدول أيام العطلة (10:00 AM – 12:00 AM)</span>
+                <span class="time-badge">14 ساعة إنتاجية</span>
+            </div>
+            <table>
+                <tr><td class="time-col">10:00 – 12:00</td><td class="activity-col">🗄️ <b>Databases</b> – تركيز عالي (SQL, Queries, Design)</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr><td class="time-col">12:00 – 12:30</td><td class="activity-col">🥗 غداء / استراحة قصيرة</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr><td class="time-col">12:30 – 02:00</td><td class="activity-col">🧩 <b>Problem Solving</b> – مراجعة الحلول السابقة</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr><td class="time-col">02:00 – 03:00</td><td class="activity-col">😴 استراحة + نشاط خفيف / نوم غفوة قصيرة</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr><td class="time-col">03:00 – 05:00</td><td class="activity-col">🏫 مراجعة الجامعة – قراءة ملاحظات وتحضير</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr><td class="time-col">05:00 – 06:00</td><td class="activity-col">💻 Problem Solving / Coding خفيف</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr class="special-row"><td class="time-col shower">06:00 – 06:30</td><td class="activity-col shower">🚿 وقت الاستحمام (ثابت)</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr class="english"><td class="time-col">06:30 – 08:00</td><td class="activity-col">🗣️ <b>English Speaking</b> – تحدث عن مادتك أو يومك</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr class="special-row"><td class="time-col dinner">08:00 – 09:00</td><td class="activity-col dinner">🍽️ وقت العشاء (ثابت)</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr class="english"><td class="time-col">09:00 – 10:00</td><td class="activity-col">✍️ English Writing & Vocab (صفحة + 3 جمل)</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr class="english"><td class="time-col">10:00 – 10:30</td><td class="activity-col">🔄 مراجعة خفيفة (تحدث وكتابة)</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr><td class="time-col">10:30 – 12:00</td><td class="activity-col">📖 English Light Output / Reading</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+            </table>
+            <div class="progress-container">
+                <div class="progress-bar" id="weekend-progress"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header weekday-header">
+                <span>🔵 جدول أيام الأسبوع (05:10 PM – 12:30 AM)</span>
+                <span class="time-badge">7.3 ساعة إنتاجية</span>
+            </div>
+            <table>
+                <tr><td class="time-col">05:10 – 06:00</td><td class="activity-col">🧠 <b>دراسة أساسية</b> – المادة الأصعب (Databases)</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr class="special-row"><td class="time-col shower">06:00 – 06:30</td><td class="activity-col shower">🚿 وقت الاستحمام (ثابت)</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr><td class="time-col">06:30 – 08:00</td><td class="activity-col">📚 دراسة ثالثة / تلخيص ومتابعة مواد الجامعة</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr class="special-row"><td class="time-col dinner">08:00 – 09:00</td><td class="activity-col dinner">🍽️ وقت العشاء (ثابت)</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr><td class="time-col">09:00 – 10:00</td><td class="activity-col">💻 دراسة إضافية / Problem Solving خفيف</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr><td class="time-col">10:00 – 10:30</td><td class="activity-col">🧘 استراحة قبل الإنجليزي (تنفس وحركة)</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr class="english"><td class="time-col">10:30 – 11:10</td><td class="activity-col">🇬🇧 English Speaking & Writing</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr class="english"><td class="time-col">11:10 – 11:50</td><td class="activity-col">📑 Vocab & المراجعه الخفيفة</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+                <tr><td class="time-col">11:50 – 12:30</td><td class="activity-col">🛌 تهدئة قبل النوم (قراءة بسيطة)</td><td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td></tr>
+            </table>
+            <div class="progress-container">
+                <div class="progress-bar" id="weekday-progress"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-notes">
+        <strong>💡 ملاحظات محمود للتميز:</strong>
+        <ul>
+            <li>الاستحمام والعشاء أوقات مقدسة للراحة وفصل الدماغ.</li>
+            <li>الالتزام بوقت الإنجليزي يومياً هو مفتاح التحدث بطلاقة.</li>
+            <li>كل مهمة تنهيها وتضع عليها علامة (✔) هي خطوة نحو حلمك.</li>
+            <li>استخدم زر "إضافة مهمة جديدة" لتخصيص جدولك حسب احتياجاتك.</li>
+            <li>تابع إحصائياتك لتحفيز نفسك على الاستمرارية.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="lang-toggle">
+    <button class="lang-btn" onclick="toggleLanguage()" id="lang-btn">EN</button>
+</div>
+
+<script>
+    // اللغة والترجمة
+    const translations = {
+        ar: {
+            title: "مخطط النجاح والإنجاز اليومي | Productivity Master",
+            subtitle: "Mahmoud Bakir 😊",
+            weekendTitle: "🟢 جدول أيام العطلة (10:00 AM – 12:00 AM)",
+            weekdayTitle: "🔵 جدول أيام الأسبوع (05:10 PM – 12:30 AM)",
+            notesTitle: "💡 ملاحظات محمود للتميز:",
+            notes: [
+                "الاستحمام والعشاء أوقات مقدسة للراحة وفصل الدماغ.",
+                "الالتزام بوقت الإنجليزي يومياً هو مفتاح التحدث بطلاقة.",
+                "كل مهمة تنهيها وتضع عليها علامة (✔) هي خطوة نحو حلمك.",
+                "استخدم زر 'إضافة مهمة جديدة' لتخصيص جدولك حسب احتياجاتك.",
+                "تابع إحصائياتك لتحفيز نفسك على الاستمرارية."
+            ],
+            completed: "المهام المكتملة",
+            productivity: "معدل الإنتاجية",
+            studyTime: "وقت الدراسة اليوم",
+            streak: "أيام متتالية",
+            resetBtn: "إعادة تعيين اليوم",
+            printBtn: "طباعة المخطط",
+            darkBtn: "الوضع الليلي",
+            addBtn: "إضافة مهمة جديدة"
+        },
+        en: {
+            title: "Daily Success & Achievement Planner | Productivity Master",
+            subtitle: "Mahmoud Bakir 😊",
+            weekendTitle: "🟢 Weekend Schedule (10:00 AM – 12:00 AM)",
+            weekdayTitle: "🔵 Weekday Schedule (05:10 PM – 12:30 AM)",
+            notesTitle: "💡 Mahmoud's Excellence Tips:",
+            notes: [
+                "Shower and dinner times are sacred for rest and mental separation.",
+                "Daily commitment to English time is the key to speaking fluently.",
+                "Every task you complete and mark (✔) is a step towards your dream.",
+                "Use the 'Add New Task' button to customize your schedule according to your needs.",
+                "Track your statistics to motivate yourself for continuity."
+            ],
+            completed: "Completed Tasks",
+            productivity: "Productivity Rate",
+            studyTime: "Today's Study Time",
+            streak: "Consecutive Days",
+            resetBtn: "Reset Day",
+            printBtn: "Print Plan",
+            darkBtn: "Night Mode",
+            addBtn: "Add New Task"
+        }
+    };
+
+    let currentLang = 'ar';
+    
+    function toggleLanguage() {
+        currentLang = currentLang === 'ar' ? 'en' : 'ar';
+        document.getElementById('lang-btn').textContent = currentLang === 'ar' ? 'EN' : 'AR';
+        applyLanguage();
+    }
+    
+    function applyLanguage() {
+        const t = translations[currentLang];
+        document.getElementById('subtitle').textContent = t.subtitle;
+        document.querySelector('title').textContent = t.title;
+        document.querySelectorAll('.weekend-header span')[0].textContent = t.weekendTitle;
+        document.querySelectorAll('.weekday-header span')[0].textContent = t.weekdayTitle;
+        document.querySelector('.footer-notes strong').textContent = t.notesTitle;
+        
+        const notesList = document.querySelectorAll('.footer-notes li');
+        t.notes.forEach((note, index) => {
+            if (notesList[index]) {
+                notesList[index].textContent = note;
+            }
+        });
+        
+        document.querySelectorAll('.stat-label')[0].textContent = t.completed;
+        document.querySelectorAll('.stat-label')[1].textContent = t.productivity;
+        document.querySelectorAll('.stat-label')[2].textContent = t.studyTime;
+        document.querySelectorAll('.stat-label')[3].textContent = t.streak;
+        
+        document.querySelectorAll('.btn')[0].innerHTML = `<i class="fas fa-redo"></i> ${t.resetBtn}`;
+        document.querySelectorAll('.btn')[1].innerHTML = `<i class="fas fa-print"></i> ${t.printBtn}`;
+        document.querySelectorAll('.btn')[2].innerHTML = `<i class="fas fa-moon"></i> ${t.darkBtn}`;
+        document.querySelectorAll('.btn')[3].innerHTML = `<i class="fas fa-plus"></i> ${t.addBtn}`;
+    }
+
+    // الثيمات
+    function changeTheme(theme) {
+        const root = document.documentElement;
+        
+        switch(theme) {
+            case 'blue':
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #00b4db, #0083b0)');
+                root.style.setProperty('--secondary-gradient', 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)');
+                root.style.setProperty('--third-gradient', 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)');
+                break;
+            case 'purple':
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #9b59b6, #8e44ad)');
+                root.style.setProperty('--secondary-gradient', 'linear-gradient(135deg, #a29bfe 0%, #74b9ff 100%)');
+                root.style.setProperty('--third-gradient', 'linear-gradient(135deg, #fd79a8 0%, #fab1a0 100%)');
+                break;
+            case 'dark':
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #2c3e50, #34495e)');
+                root.style.setProperty('--secondary-gradient', 'linear-gradient(135deg, #485460 0%, #1e272e 100%)');
+                root.style.setProperty('--third-gradient', 'linear-gradient(135deg, #4b4b4b 0%, #2d3436 100%)');
+                root.style.setProperty('--card-bg', '#2c3e50');
+                root.style.setProperty('--text-main', '#ecf0f1');
+                break;
+            case 'green':
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, #27ae60, #2ecc71)');
+                root.style.setProperty('--secondary-gradient', 'linear-gradient(135deg, #00cec9 0%, #81ecec 100%)');
+                root.style.setProperty('--third-gradient', 'linear-gradient(135deg, #55efc4 0%, #00b894 100%)');
+                break;
+        }
+    }
+
+    // الإحصائيات والتحديث
+    function updateStats() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        const totalTasks = checkboxes.length;
+        const completedTasks = checkedBoxes.length;
+        
+        // تحديث العداد
+        document.getElementById('completed-tasks').textContent = completedTasks;
+        
+        // حساب نسبة الإنتاجية
+        const productivity = Math.round((completedTasks / totalTasks) * 100);
+        document.getElementById('productivity-score').textContent = `${productivity}%`;
+        
+        // حساب وقت الدراسة (تقريبي)
+        const studyHours = Math.round(completedTasks * 0.75);
+        document.getElementById('study-time').textContent = `${studyHours} س`;
+        
+        // تحديث شريط التقدم
+        const weekendProgress = document.getElementById('weekend-progress');
+        const weekdayProgress = document.getElementById('weekday-progress');
+        
+        const weekendBoxes = document.querySelectorAll('.weekend-card input[type="checkbox"]');
+        const weekdayBoxes = document.querySelectorAll('.weekday-card input[type="checkbox"]');
+        
+        // نستخدم مجاميع افتراضية لأننا لم نضف الكلاسات بعد
+        const weekendChecked = document.querySelectorAll('.card:first-child input[type="checkbox"]:checked').length;
+        const weekdayChecked = document.querySelectorAll('.card:last-child input[type="checkbox"]:checked').length;
+        
+        weekendProgress.style.width = `${(weekendChecked / 12) * 100}%`;
+        weekdayProgress.style.width = `${(weekdayChecked / 9) * 100}%`;
+        
+        // تحفيز بصري
+        if (productivity === 100) {
+            document.getElementById('productivity-score').style.color = '#2ecc71';
+            document.getElementById('productivity-score').style.animation = 'pulse 1s infinite';
+        }
+        
+        // تحديث الأيام المتتالية (محاكاة)
+        const today = new Date().toDateString();
+        const lastVisit = localStorage.getItem('lastVisit');
+        
+        if (lastVisit === today) {
+            // نفس اليوم، لا تحديث
+        } else if (lastVisit && new Date(lastVisit).getDate() === new Date(today).getDate() - 1) {
+            // يوم متتابع
+            let streak = parseInt(localStorage.getItem('streak')) || 0;
+            streak++;
+            localStorage.setItem('streak', streak);
+            document.getElementById('streak-days').textContent = streak;
+        } else {
+            // كسر التتابع
+            localStorage.setItem('streak', '1');
+            document.getElementById('streak-days').textContent = '1';
+        }
+        
+        localStorage.setItem('lastVisit', today);
+        localStorage.setItem('streak', document.getElementById('streak-days').textContent);
+    }
+
+    // إعادة تعيين اليوم
+    function resetDay() {
+        if (confirm(currentLang === 'ar' ? 'هل تريد إعادة تعيين جميع المهام لهذا اليوم؟' : 'Do you want to reset all tasks for today?')) {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            updateStats();
+            
+            // تأثير بصري
+            document.body.style.backgroundColor = '#f4f7f6';
+            setTimeout(() => {
+                document.body.style.backgroundColor = '';
+            }, 500);
+        }
+    }
+
+    // طباعة المخطط
+    function printPlan() {
+        window.print();
+    }
+
+    // الوضع الليلي
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        
+        if (document.body.classList.contains('dark-mode')) {
+            document.documentElement.style.setProperty('--card-bg', '#2c3e50');
+            document.documentElement.style.setProperty('--text-main', '#ecf0f1');
+            document.documentElement.style.setProperty('--shadow-color', 'rgba(0, 0, 0, 0.3)');
+            document.body.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)';
+        } else {
+            document.documentElement.style.setProperty('--card-bg', '#ffffff');
+            document.documentElement.style.setProperty('--text-main', '#34495e');
+            document.documentElement.style.setProperty('--shadow-color', 'rgba(0, 0, 0, 0.1)');
+            document.body.style.background = 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)';
+        }
+    }
+
+    // إضافة مهمة جديدة
+    function addTask() {
+        const newTask = prompt(currentLang === 'ar' ? 'أدخل المهمة الجديدة:' : 'Enter new task:');
+        if (newTask) {
+            const time = prompt(currentLang === 'ar' ? 'أدخل الوقت (مثال: 02:00 – 03:00):' : 'Enter time (e.g., 02:00 – 03:00):');
+            if (time) {
+                const table = document.querySelector('.weekend-card table') || document.querySelector('.card:first-child table');
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td class="time-col">${time}</td>
+                    <td class="activity-col">✅ ${newTask}</td>
+                    <td class="check-col"><label class="checkbox-container"><input type="checkbox" onchange="updateStats()"><span class="checkmark"></span></label></td>
+                `;
+                table.appendChild(newRow);
+                
+                // تأثير إضافة
+                newRow.style.animation = 'slideIn 0.5s ease-out';
+                updateStats();
+                
+                alert(currentLang === 'ar' ? 'تمت إضافة المهمة بنجاح!' : 'Task added successfully!');
+            }
+        }
+    }
+
+    // عرض التاريخ الحالي
+    function displayCurrentDate() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const dateString = currentLang === 'ar' 
+            ? now.toLocaleDateString('ar-SA', options)
+            : now.toLocaleDateString('en-US', { ...options, weekday: 'long' });
+        
+        document.getElementById('current-date').textContent = dateString;
+    }
+
+    // التهيئة عند التحميل
+    document.addEventListener('DOMContentLoaded', function() {
+        // إضافة كلاسات للتمييز بين الجداول
+        document.querySelectorAll('.card')[0].classList.add('weekend-card');
+        document.querySelectorAll('.card')[1].classList.add('weekday-card');
+        
+        // استعادة البيانات المحفوظة
+        const savedStreak = localStorage.getItem('streak');
+        if (savedStreak) {
+            document.getElementById('streak-days').textContent = savedStreak;
+        }
+        
+        // عرض التاريخ
+        displayCurrentDate();
+        
+        // تحديث الإحصائيات أول مرة
+        updateStats();
+        
+        // تأثير دخول الصفحة
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+            document.body.style.transition = 'opacity 1s';
+            document.body.style.opacity = '1';
+        }, 100);
+    });
+</script>
+</body>
+</html>
